@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1>📌 게시물 수정</h1>
+<div class="container">
+    <form action="/posts/new" method="post">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" th:placeholder="${post.id}">
+            <label for="content">내용</label>
+            <input type="text" id="content" name="content" th:placeholder="${post.content}">
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</div> <!-- /container -->
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1>📌 게시물 상세 보기</h1>
+<div class="container">
+    <div class="form-group">
+        <label>제목 : <span th:text="${post.id}"></span></label><br>
+        <label>내용 : <span th:text="${post.content}"></span></label>
+    </div>
+    <a href="/posts">목록으로</a>
+</div> <!-- /container -->
+</body>
+</html>
