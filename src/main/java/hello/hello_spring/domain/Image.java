@@ -7,25 +7,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="posts")
+@Table(name="images")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String title;
+    private String originFileName;
 
-    @Lob
     @Column(nullable = false)
-    private String content;
+    private String path;
 
-    public void update(String title, String content){
-        this.title = title;
-        this.content = content;
+    public void update(String originFileName, String path){
+        this.originFileName = originFileName;
+        this.path = path;
     }
 }

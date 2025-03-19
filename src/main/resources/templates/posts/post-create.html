@@ -1,17 +1,75 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quill.js Image Upload</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <style>
+        #editor-container { height: 300px; }
+    </style>
+</head>
 <body>
+
 <h1>📌 새 게시물 작성</h1>
-<div class="container">
-    <form action="/posts/new" method="post">
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="title">
-            <label for="content">내용</label>
-            <input type="text" id="content" name="content">
-        </div>
-        <button type="submit">등록</button>
-    </form>
-</div> <!-- /container -->
+<form action="/posts/new" method="post" onsubmit="submitForm()">
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <div id="editor-container"></div>
+    <input type="hidden" id="content" name="content">
+
+    <button type="submit">등록</button>
+</form>
+
+<script>
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'header': 1 }, { 'header': 2 }],
+                    ['link', 'image']
+                ],
+                handlers: {
+                    image: imageHandler
+                }
+            }
+        }
+    });
+
+    function imageHandler() {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = function() {
+            var file = input.files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/image/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(imageUrl => {
+                    let range = quill.getSelection();
+                    // imageUrl = imageUrl.replace(/\\/g, '/');
+                    quill.insertEmbed(range.index, 'image', '/'+imageUrl);
+                    quill.setSelection(range.index + 1);
+                })
+                .catch(error => console.error('이미지 업로드 실패', error));
+        };
+
+    }
+
+    function submitForm() {
+        document.getElementById('content').value = quill.root.innerHTML;
+    }
+</script>
+
 </body>
 </html>

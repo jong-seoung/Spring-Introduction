@@ -17,11 +17,11 @@
     <tr th:each="post : ${posts}">
         <td th:text="${post.id}"></td>
         <td th:text="${post.title}"></td>
-        <td th:text="${post.content}"></td>
+        <td th:utext="${post.content}"></td> <!-- HTML 렌더링 -->
         <td>
             <a th:href="@{/posts/{id}(id=${post.id})}">조회</a>
             <a th:href="@{/posts/edit/{id}(id=${post.id})}">수정</a>
-            <form id="delectPost" th:action="@{'/posts/delete/' + ${post.id}}" method="post">
+            <form id="deletePost" th:action="@{'/posts/delete/' + ${post.id}}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
                 <button id="delete-btn">삭제</button>
             </form>
